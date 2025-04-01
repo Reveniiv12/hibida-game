@@ -95,16 +95,17 @@ function selectCategory(category) {
     switchPage("create-game-page", "difficulty-page");
 }
 
+// إنشاء غرفة (استبدال الدالة القديمة)
 async function createRoom() {
-  const roomRef = await db.collection("rooms").add({
-    category: currentCategory,
-    difficulty: currentDifficulty,
+  const { doc, setDoc, collection } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+  
+  const roomRef = doc(collection(db, "rooms"));
+  await setDoc(roomRef, {
     host: playerName,
     players: {},
-    teamNames: { A: "فريق A", B: "فريق B" },
     words: words,
   });
-  currentRoomCode = roomRef.id; // استخدم ID المستند كرمز الغرفة
+  currentRoomCode = roomRef.id; // ID المستند هو رمز الغرفة
 }
 
 function selectDifficulty(difficulty) {
