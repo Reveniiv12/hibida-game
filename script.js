@@ -95,6 +95,18 @@ function selectCategory(category) {
     switchPage("create-game-page", "difficulty-page");
 }
 
+async function createRoom() {
+  const roomRef = await db.collection("rooms").add({
+    category: currentCategory,
+    difficulty: currentDifficulty,
+    host: playerName,
+    players: {},
+    teamNames: { A: "فريق A", B: "فريق B" },
+    words: words,
+  });
+  currentRoomCode = roomRef.id; // استخدم ID المستند كرمز الغرفة
+}
+
 function selectDifficulty(difficulty) {
     currentDifficulty = difficulty;
     words = categories[currentCategory].difficulties[difficulty];
