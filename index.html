@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة شغف الهبيده</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- الصفحة الأولى: إدخال اسم اللاعب -->
+<div id="player-name-page" class="centered-container">
+    <h1 class="game-title">لعبة شغف الهبيده</h1>
+    <p class="game-intro">
+         أهلاً بك في <strong>لعبة شغف الهبيده</strong> 
+         
+        استعد لتجربة ممتعة ومثيرة تجمع بين التحدي والذكاء.  
+
+        اختر اسمك للبدء واستمتع بالمنافسة مع أصدقائك!  
+        
+        لا تنسَ: العب بذكاء، تعاون مع فريقك، واستمتع!
+    </p>
+    <h2>أدخل اسمك</h2>
+    <input type="text" id="player-name" class="input-field" placeholder="اسم اللاعب">
+    <button class="start-btn" onclick="submitPlayerName()">التالي</button>
+</div>
+
+
+    <!-- الصفحة الثانية: إنشاء أو الانضمام إلى لعبة -->
+    <div id="game-options-page" class="centered-container hidden">
+        <h1 class="game-title">مرحباً <span id="display-player-name"></span></h1>
+        <h2>اختر خياراً:</h2>
+        <div class="button-container">
+            <button class="start-btn" onclick="showCreateGame()">إنشاء لعبة جديدة</button>
+            <button class="start-btn" onclick="showJoinGame()">الانضمام إلى لعبة</button>
+        </div>
+    </div>
+
+    <!-- صفحة إنشاء لعبة جديدة -->
+    <div id="create-game-page" class="centered-container hidden">
+        <h1 class="game-title">إنشاء لعبة جديدة</h1>
+        <h2>اختر تصنيف الكلمات</h2>
+        <div class="categories-grid">
+            <div class="category-card" onclick="selectCategory('nature')">
+                <img src="" alt="الطبيعة" class="category-image" id="nature-img">
+                <h3>🌿 الطبيعة</h3>
+            </div>
+            <div class="category-card" onclick="selectCategory('food')">
+                <img src="" alt="الطعام" class="category-image" id="food-img">
+                <h3>🍕 الطعام</h3>
+            </div>
+            <div class="category-card" onclick="selectCategory('science')">
+                <img src="" alt="العلوم" class="category-image" id="science-img">
+                <h3>🔬 العلوم</h3>
+            </div>
+        </div>
+        <button class="menu-btn" onclick="backToOptions()">رجوع</button>
+    </div>
+
+    <!-- صفحة اختيار الصعوبة -->
+    <div id="difficulty-page" class="centered-container hidden">
+        <h1 class="game-title">اختر مستوى الصعوبة</h1>
+        <div class="difficulty-options">
+            <button class="difficulty-btn" onclick="selectDifficulty('easy')">سهل</button>
+            <button class="difficulty-btn" onclick="selectDifficulty('medium')">متوسط</button>
+            <button class="difficulty-btn" onclick="selectDifficulty('hard')">صعب</button>
+        </div>
+        <button class="menu-btn" onclick="backToCategories()">رجوع</button>
+    </div>
+
+    <!-- صفحة انتظار اللاعبين -->
+    <div id="waiting-room" class="centered-container hidden">
+        <h1 class="game-title">غرفة اللعب</h1>
+        <p>شارك هذا الرمز مع الأصدقاء للانضمام:</p>
+        <div class="room-code" id="room-code-display">ABCD12</div>
+        <p>أو شارك الرابط:</p>
+        <div class="room-link" id="room-link-display">https://game.com/join/ABCD12</div>
+        
+        <h2>اللاعبون:</h2>
+        <div id="players-list">
+            <div class="player" id="host-player">
+                <span id="host-name"></span> (أنت - المضيف)
+            </div>
+        </div>
+        
+        <h2>اختر فريقك:</h2>
+        <div class="teams-selection">
+            <div class="team-option" onclick="joinTeam('A')">
+                <h3 id="teamA-title-waiting">فريق A</h3>
+                <div id="teamA-members" class="team-members-list"></div>
+            </div>
+            <div class="team-option" onclick="joinTeam('B')">
+                <h3 id="teamB-title-waiting">فريق B</h3>
+                <div id="teamB-members" class="team-members-list"></div>
+            </div>
+        </div>
+        
+        <button class="start-btn" id="start-game-btn" onclick="startGame()">بدء اللعبة</button>
+        <button class="menu-btn" onclick="leaveRoom()">مغادرة الغرفة</button>
+    </div>
+
+    <!-- صفحة الانضمام إلى لعبة -->
+    <div id="join-game-page" class="centered-container hidden">
+        <h1 class="game-title">الانضمام إلى لعبة</h1>
+        <h2>أدخل رمز الغرفة:</h2>
+        <input type="text" id="room-code-input" class="input-field" placeholder="أدخل رمز الغرفة">
+        <button class="start-btn" onclick="joinRoom()">انضم</button>
+        <button class="menu-btn" onclick="backToOptions()">رجوع</button>
+    </div>
+
+    <!-- صفحة اللعبة الرئيسية -->
+    <div id="game-container" class="hidden centered-container">
+        <div id="teams-container">
+            <div class="team">
+                <h3 id="teamA-title">فريق A</h3>
+                <div id="teamA-players" class="team-members-list"></div>
+                <div id="teamA-words" class="words-list"></div>
+                <div class="score" id="scoreA">0</div>
+            </div>
+
+            <div id="word-chain-container">
+                <h2>الكلمات المتصلة</h2>
+                <div id="word-chain"></div>
+                <div id="timer-display" style="font-size: 20px; margin: 10px 0;"></div>
+                <input type="text" id="guess-input" class="input-field" placeholder="أدخل الكلمة التالية..." readonly>
+                <button class="submit-btn" onclick="submitGuess()">إرسال</button>
+                <p id="message-box"></p>
+            </div>
+
+            <div class="team">
+                <h3 id="teamB-title">فريق B</h3>
+                <div id="teamB-players" class="team-members-list"></div>
+                <div id="teamB-words" class="words-list"></div>
+                <div class="score" id="scoreB">0</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
