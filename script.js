@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Game variables
+// متغيرات اللعبة
 let playerName = "";
 let isHost = false;
 let currentRoomCode = "";
@@ -79,19 +79,33 @@ window.onload = function() {
   }
 };
 
-// Page navigation functions
+// دالة submitPlayerName المعدلة
 function submitPlayerName() {
-  playerName = document.getElementById("player-name").value.trim();
-  if (playerName === "") {
-    const inputField = document.getElementById("player-name");
-    inputField.style.animation = "shake 0.5s";
-    inputField.focus();
-    setTimeout(() => { inputField.style.animation = ""; }, 500);
-    return;
-  }
-  
-  document.getElementById("display-player-name").textContent = playerName;
-  switchPage("player-name-page", "game-options-page");
+    const nameInput = document.getElementById("player-name");
+    playerName = nameInput.value.trim();
+    
+    if (!playerName) {
+        nameInput.style.animation = "shake 0.5s";
+        nameInput.focus();
+        
+        nameInput.addEventListener('animationend', () => {
+            nameInput.style.animation = '';
+        }, {once: true});
+        
+        return;
+    }
+    
+    document.getElementById("display-player-name").textContent = playerName;
+    switchPage("player-name-page", "game-options-page");
+    
+    // Debugging
+    console.log("تم تسجيل اللاعب:", playerName);
+}
+
+// باقي الدوال (بدون تغيير)
+function switchPage(fromId, toId) {
+    document.getElementById(fromId).classList.add("hidden");
+    document.getElementById(toId).classList.remove("hidden");
 }
 
 function showCreateGame() {
@@ -525,3 +539,23 @@ function leaveRoom() {
   }
   switchPage("waiting-room", "game-options-page");
 }
+
+// عند تحميل الصفحة
+window.onload = function() {
+    document.getElementById('nature-img').src = categories.nature.image;
+    document.getElementById('food-img').src = categories.food.image;
+    document.getElementById('science-img').src = categories.science.image;
+    
+    // التحقق من وجود رمز غرفة في الرابط
+    const urlParams = new URLSearchParams(window.location.search);
+    const joinCode = urlParams.get('join');
+    if (joinCode) {
+        document.getElementById("room-code-input").value = joinCode;
+    }
+    
+    // التأكد من أن الزر يعمل
+    const nextBtn = document.getElementById('next-btn');
+    if (nextBtn) {
+        nextBtn.addEventListener('click', submitPlayerName);
+    }
+};
