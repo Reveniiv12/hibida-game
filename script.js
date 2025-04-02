@@ -471,7 +471,21 @@ function updatePlayersList() {
             teamBMembers.appendChild(memberElement);
         }
     }
-    
+function switchPage(fromId, toId) {
+  document.getElementById(fromId).classList.add("hidden");
+  document.getElementById(toId).classList.remove("hidden");
+}
+
+function leaveRoom() {
+  if (currentRoomCode) {
+    const roomRef = db.collection("rooms").doc(currentRoomCode);
+    roomRef.update({
+      [`players.${playerName}`]: firebase.firestore.FieldValue.delete()
+    });
+  }
+  switchPage("waiting-room", "game-options-page");
+}    
+
     // تحديث قوائم اللاعبين في الفريقين
     teamPlayers.A = [];
     teamPlayers.B = [];
