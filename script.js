@@ -1,4 +1,17 @@
+// Firebase configuration and initialization
+const firebaseConfig = {
+  apiKey: "AIzaSyBbrNlAVg2k3P1t19kBw8zawe_HaustQcA",
+  authDomain: "hibida-game.firebaseapp.com",
+  projectId: "hibida-game",
+  storageBucket: "hibida-game.appspot.com",
+  messagingSenderId: "6531720128",
+  appId: "1:6531720128:web:f511392c45ff8fc39f5e25",
+  measurementId: "G-KTXCWQXG1X"
+};
 
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 
 
